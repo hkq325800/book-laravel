@@ -1,18 +1,15 @@
 <?php
 
 class Tool {
-	public static function show() {
-		return 'haha';
-	}
 	//验证管理员身份
 	public static function adminverify($xuserId,$xpassword){
-		if(!identity('user','user_rank','图书管理','user_id',$xuserId)){
-			error('rankverify_error');
+		if(!static::identity('user','user_rank','图书管理','user_id',$xuserId)){
+			static::error('rankverify_error');
 		}
 		else{
-			$xpassword=setSecret($xpassword);
-			if(!identity('user','user_id',$xuserId,'user_password',$xpassword)){
-				error('verify_error');
+			$xpassword=static::setSecret($xpassword);
+			if(!static::identity('user','user_id',$xuserId,'user_password',$xpassword)){
+				static::error('verify_error');
 			}
 			else{
 				return 1;
@@ -44,6 +41,23 @@ class Tool {
 			}
 			return $arr;
 		}
+	}
+	public static function isbn2info($bookIsbn){
+		$result=file_get_contents('https://api.douban.com/v2/book/isbn/:'.$bookIsbn);
+  		return $arr=(Array)json_decode($result,true); 
+	}
+	public static function created_at2return_at($created_at){
+		$created_at=substr($created_at,0,10);
+		$time=strtotime($created_at);
+		$timenow=time();   
+		//$datesum =31;//需要加减的日期数
+		$time1=31*3600*24;  
+		//$xuhuan=date('Y-m-d H:i:s',$time+$time1);
+		$day=(int)(($time+$time1-$timenow)/3600/24);
+		$hour=(int)((($time+$time1-$timenow)/3600/24-$day)*24);
+		$min=(int)(((($time+$time1-$timenow)/3600/24-$day)*24-$hour)*60);
+		$day<0?$return_at="已超期".$day*(-1)."天".$hour."时".$min."分":$return_at=$day."天".$hour."时".$min."分";//
+		return $return_at;
 	}
 	//判断post数据是否为json
 	public static function is_json($string) {

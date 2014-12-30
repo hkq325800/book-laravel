@@ -1,0 +1,156 @@
+﻿<HTML>
+<HEAD>
+<title>form to json test</title>
+<STYLE>
+   .userData {behavior:url(#default#userdata);}
+</STYLE>
+<script type="text/javascript" src="howwaForm2JsonAll.js"></script>
+<script type="text/javascript" src="howwajson.js"></script>
+<script type="text/javascript">
+function loadXMLDoc()
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+    /*alert(xmlhttp.readyState);
+    alert(xmlhttp.status);
+    alert(xmlhttp.responseText);*/
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    //alert(xmlhttp.responseText);
+    document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("POST","http://localhost/book-laravel/public/public/passChange",false);
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send(id1.value);
+  	//alert(xmlhttp);
+}
+</script>
+</HEAD>
+<BODY>
+<FORM ID="oPersistForm">
+
+
+<!-- 修改图书信息<br/>
+<input type="text" name="bookName" placeholder="bookName" /><br>
+<input type="text" name="bookAuthor" placeholder="bookAuthor" /><br>
+<input type="text" name="bookPub" placeholder="bookPub" /><br>
+<input type="text" name="bookType" placeholder="bookType" /><br>
+<input type="text" name="bookEdit" placeholder="bookEdit" /><br>
+<input type="text" name="bookPrice" placeholder="bookPrice" /><br>
+<input type="text" name="bookStatus" placeholder="bookStatus" /><br>
+<input type="text" name="bookPic" placeholder="bookPic" /><br>
+<input type="text" name="bookLink" placeholder="bookLink" /><br>
+<input type="text" name="bookInfo" placeholder="bookInfo" /><br> -->
+
+<!-- 注册<br/>
+<input type="text" name="userId" placeholder="userId" /><br>
+<input type="text" name="userName" placeholder="userName" /><br>
+<input type="text" name="password" placeholder="password" /><br>
+<input type="text" name="rePassword" placeholder="rePassword" /><br> -->
+
+
+<!-- 登录<br/>
+<input type="text" name="userId" placeholder="userId" /><br>
+<input type="text" name="password" placeholder="password" /><br> -->
+
+修改密码<br/>
+<input type="text" name="userId" placeholder="userId" /><br>
+<input type="text" name="oldPass" placeholder="oldPass" /><br>
+<input type="text" name="newPass" placeholder="newPass" /><br>
+<input type="text" name="renewPass" placeholder="renewPass" /><br>
+
+
+<!-- 
+<INPUT name=uuid CLASS="userData" TYPE="hidden" ID="uuid" value="abcd-1234-3321">
+<br>
+ID：<INPUT name=id CLASS="userData" TYPE="text" ID="id" value="6523421" disabled>
+<br>
+所在班级：<INPUT name=cls CLASS="userData" TYPE="text" ID="cls" value="六(1)" readonly>
+<br>
+姓名：<INPUT name=xm CLASS="userData" TYPE="text" ID="oPersistInput1" value="张三">
+<br>
+密码：<INPUT name=mm CLASS="userData" TYPE="password" ID="mm" value="123456">
+<br>
+性别：<INPUT name=xb CLASS="userData" TYPE="text" ID="oPersistInput2" value="男">
+<br>
+简历
+<br>
+<textarea  name=jl CLASS="userData" cols=80 rows=12 ID=oPersistInput3>这是我的简历，1949.10.1出生.</textarea>
+<br>
+文化程度：
+<input type=radio name=whcd value="a">小学以下&nbsp;
+<input type=radio name=whcd value="b">中学&nbsp;
+<input type=radio name=whcd value="c">大专&nbsp;
+<input type=radio name=whcd value="d" checked>大学&nbsp;
+<br>
+个人爱好：
+<input type=checkbox name=grah value="a1" checked>游泳&nbsp;
+<input type=checkbox name=grah value="a2">篮球&nbsp;
+<input type=checkbox name=grah value="a3" checked>跑步&nbsp;
+<input type=checkbox name=grah value="a4">爬山&nbsp;
+<br>
+最喜欢的汽车品牌：
+<SELECT ID="oSelect1" NAME="Cars">
+<OPTION VALUE="c1" SELECTED>宝马
+<OPTION VALUE="c2">保时捷
+<OPTION VALUE="c3">奔驰
+<OPTION VALUE="c4">兰博基尼
+<OPTION VALUE="c5">奥迪
+<OPTION VALUE="c6">本田
+</SELECT>
+<br>
+最喜欢的人物(可多选)：
+<SELECT ID="oSelect2" NAME="VIP"  SIZE="3" MULTIPLE>
+<OPTION VALUE="h1" SELECTED>毛泽东
+<OPTION VALUE="h2">周恩来
+<OPTION VALUE="h3">朱德
+<OPTION VALUE="h4">蔡元培
+<OPTION VALUE="h5">李隆基
+<OPTION VALUE="h6">朱元璋
+<OPTION VALUE="h7">秦始皇
+</SELECT>
+<br>
+<br>
+<INPUT TYPE="button" VALUE="Load">
+<INPUT TYPE="button" VALUE="Save"> -->
+<INPUT TYPE="button" VALUE="formtojson" onClick="id1.value=howwaForm2Json.formToJSON(oPersistForm)">
+<input type="button" value="提交" onclick="loadXMLDoc()">
+<div id="myDiv"></div>
+</FORM>
+
+<textarea CLASS="userData" cols=80 rows=6 ID=id1></textarea>
+<br>
+<input type=button value="解析" onClick="jiexi()">
+<input type=button value="请将form域的数据清空，点击这里回填" onClick="huitian()">
+
+<script>
+function jiexi() {
+	var j = howwaJson.string2json1(id1.value);  // 将json字符串转化成json对象
+	alert("密码="+j.mm[0]+"\n第1个最喜欢的人物="+j['VIP'][0]);
+	alert("个人爱好="+j.grah.join(","));  //用join方法将其值组合成字符串
+	alert("简历="+unescape(j.jl[0]) );  //用unescape方法将反处理被escape处理过的数据
+	alert("测试一个不存在的变量="+howwaForm2Json.getJsonItem(j,"abcd",0) );
+                     alert("再测试一个不存在的变量="+howwaForm2Json.getJsonItem2(j,"abcd",0) );
+                     alert("测试返回变量的字符串组合="+howwaForm2Json. getJsonItemStr(j,"VIP") );
+}
+
+function huitian() {
+	var j = howwaJson.string2json1(id1.value);  // 将json字符串转化成json对象
+	howwaForm2Json.JSONToform (oPersistForm,j) ;
+}
+
+</script>
+
+</BODY>
+</HTML>

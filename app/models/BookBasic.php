@@ -6,7 +6,7 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class BookBasic extends Eloquent implements RemindableInterface {
 
 	use RemindableTrait;
-
+	use SoftDeletingTrait;
 	/**
 	 * The database table used by the model.
 	 *

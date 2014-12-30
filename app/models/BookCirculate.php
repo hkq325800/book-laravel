@@ -6,15 +6,26 @@ use Illuminate\Auth\Reminders\RemindableInterface;
 class BookCirculate extends Eloquent implements RemindableInterface {
 
 	use RemindableTrait;
-
+	use SoftDeletingTrait;
 	/**
 	 * The database table used by the model.
 	 *
 	 * @var string
 	 */
 	protected $table = 'bookcirculate';
-	public $timestamps =true;
-
+	public $timestamps =false;
+	public function booklist()
+    {
+        return $this->hasOne('BookList','id','book_id');
+    }
+    public function user()
+    {
+    	return $this->hasOne('User','user_id','user_id');
+    }
+    public function bookbasic()
+    {
+    	return $this->hasOne('BookBasic','id','book_kind');
+    }
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
